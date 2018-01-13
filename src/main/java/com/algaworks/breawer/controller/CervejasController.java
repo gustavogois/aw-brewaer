@@ -15,21 +15,20 @@ import com.algaworks.breawer.model.Cerveja;
 public class CervejasController {
 
 	@RequestMapping("/cervejas/novo")
-	public String novo() {
+	public String novo(Cerveja cerveja) {
 		return "cerveja/cadastroCerveja";
 	}
 	
 	@RequestMapping(value = "/cervejas/novo", method = RequestMethod.POST)
-	public String cadstrar(@Valid Cerveja cerveja, BindingResult bidingResult, Model model, RedirectAttributes redirectAttribute) {
-		
-		if( bidingResult.hasErrors() ) {
-			model.addAttribute("mensagem", "Erro no formulário");
-			return "cerveja/cadastroCerveja";
+	public String cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
+		if (result.hasErrors()) {
+			return novo(cerveja);
 		}
 		
-		// Cria uma sessão e coloca o atributo, para que ele permaneça mesmo com o redirect
-		redirectAttribute.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
-		System.out.println(" >>>>>> Cadastrar!! SKU: " + cerveja.getSku());
+		// Salvar no banco de dados...
+		attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
+		System.out.println(">>> sku: " + cerveja.getSku());
 		return "redirect:/cervejas/novo";
 	}
+	
 }
