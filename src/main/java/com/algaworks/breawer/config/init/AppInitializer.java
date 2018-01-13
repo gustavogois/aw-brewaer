@@ -1,5 +1,8 @@
 package com.algaworks.breawer.config.init;
 
+import javax.servlet.Filter;
+
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.algaworks.breawer.config.WebConfig;
@@ -23,6 +26,15 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		// Qualquer requisição a partir do nome da aplicação para a frente será entregue ao Dispatcher 
 		// Se fosse configurado no web.xml seria a propriedade urlmapping
 		return new String[] {"/"};
+	}
+	
+	@Override
+	protected Filter[] getServletFilters() {
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		
+		return new Filter[] { characterEncodingFilter };
 	}
 
 }
